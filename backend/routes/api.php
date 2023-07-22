@@ -4,9 +4,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\FileController;
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\BookAdminController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\ValuesController;
+use Illuminate\Support\Facades\Storage;
+use App\Models\Rating;
+use App\Models\Comment;
+use App\Models\ReplyTo;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,37 +41,48 @@ Route::prefix('auth')->controller(AuthController::class)->group(function(){
 //Tokens
 Route::post('/tokens/create/{token_name}', function (Request $request) {
     $token = $request->user()->createToken("token_name");
- 
+
     return ['token' => $token->plainTextToken];
 });
-// $token = $request->bearerToken();
 
-// foreach ($user->tokens as $token) {
-//     //
-// }
 
-// Search
-// Route::post('/search', function (Request $request) {
-//     if ($request->keysearch) {
-//         SearchController::searchByKeyWord($request);
-//     }
-//     else{
-//         SearchController::searchByCategory($request);
-//     }
-//     $query = $request->query('query');
-// })->middleware('auth:sanctum');
 
-//File
-Route::prefix('file')->controller(FileController::class)->group(function(){
-    Route::post('/upload', 'store')->middleware('auth:sanctum');
-    Route::post('/uploading', 'upload');
+
+
+Route::post('/books/rate',function(Request $request){
+    $rating = Rating::updateOrCreate(
+        ['user_id' => $request->user_id,'book_id' => $request->book_id],
+        ['user_id' => $request->user_id,'book_id' => $request->book_id,'like' => $request->like,'rating' => $request->rating]
+    );
+    return $rating;
+});
+Route::post('/books/myrate',function(Request $request){
+    $rating = Rating::where("user_id",$request->user_id)->where("book_id",$request->book_id)->first();
+    return $rating;
+});
+Route::post('/books/comment',function(Request $request){
+    $comment = Comment::updateOrCreate(
+        ['id' => $request->id],
+        ['user_id' => $request->user_id,'book_id' => $request->book_id,'text' => $request->text]
+    );
+    if($request->parentId>0)
+        $replyTo = ReplyTo::updateOrCreate(
+            ['id' => $request->id],
+            ['response_id' => $comment->id,'comment_id' => $request->parentId]
+        );
+    return $comment;
 });
 
-// Admin   
-Route::prefix('admin')->controller(AdminController::class)->group(function(){
-    Route::get('/unverifiedBooks', 'unverifiedBooks');
-    Route::get('/verifiedBooks', 'verifiedBooks');
-    Route::post('/accept', 'accept');
-    Route::post('/reject', 'reject');
-    Route::post('/accept', 'accept');
-});
+Route::apiResource('/values',ValuesController::class);
+Route::apiResource('/books',BookController::class);
+Route::apiResource('/admin/books',BookAdminController::class);
+Route::get('/public/{type}/{folder}/{filename}', function ($type,$folder,$filename) {
+    $path = 'public/'.$type.'/'.$folder.'/' . $filename;
+    if (Storage::exists($path)) {
+        $file = Storage::get($path);
+        $type = Storage::mimeType($path);
+        $response = response($file, 200)->header('Content-Type', $type);
+        return $response;
+    }
+    abort(404);
+})->name('image');

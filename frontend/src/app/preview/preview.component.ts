@@ -15,18 +15,15 @@ export class PreviewComponent implements OnInit {
   data:any;
   bookPath:string|undefined;
   trustedPath!:SafeResourceUrl;
-  constructor(private activatedRoute: ActivatedRoute, 
+  constructor(private activatedRoute: ActivatedRoute,
     private bookService: BookService,
     private sanitizer: DomSanitizer
     ) { }
 
   ngOnInit(): void {
     this.book=this.bookService.bookValue;
-    console.log("PreviewC");
-    console.log("this.book");
     console.log(this.book);
-    if(this.book)this.bookPath=this.book.path;
-    this.bookPath="assets/pdf/Les_cartes_graphiques-fr.pdf";
+    this.bookPath="api/"+this.book.file;
     this.trustedPath=this.sanitizer.bypassSecurityTrustResourceUrl(this.bookPath);
   }
 

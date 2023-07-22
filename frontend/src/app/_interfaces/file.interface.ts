@@ -1,12 +1,13 @@
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 export interface FileProgress {
+    filename:string;
     file:File;
     error:boolean;
-    uploadProgress?:number;
-    uploadSub?: Subscription;
-}
-export interface FileForm{
+    uploadProgress:number;
     faculty: string;
     domain: string;
+    type: string;
+    uploadSub?: Subscription;
 }
+

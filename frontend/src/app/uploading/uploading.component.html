@@ -1,0 +1,42 @@
+<div *ngIf="user">
+  <input type="checkbox" id="check">
+  <label class="chat-btn btn btn-primary" for="check">
+    <i class="fa fa-upload comment"></i>
+    <i class="fa fa-close close"></i>
+  </label>
+  <div class="wrap">
+    <div class="container my-4">
+      <div *ngIf="filesProgress && filesProgress.length > 0">
+        <div class="row">
+          <div class="col-7">
+            <strong>File Name</strong>
+          </div>
+          <div class="col-4">
+            <strong>Progress</strong>
+          </div>
+          <div class="col-1"></div>
+        </div>
+        <div *ngFor="let fileProgress of filesProgress" class="row my-2">
+          <div class="col-7">
+            {{ fileProgress.filename }}
+          </div>
+          <div class="col-4">
+            <mat-progress-bar class="progress-bar" mode="determinate" [value]="fileProgress.uploadProgress"
+              *ngIf="fileProgress.uploadProgress"></mat-progress-bar>
+          </div>
+          <div class="col-1">
+            <i role="button" class="cancel-upload bi bi-bug text-danger" (click)="cancelUpload(fileProgress)"
+              *ngIf="fileProgress.error"></i>
+            <i role="button" class="cancel-upload bi bi-trash text-danger" (click)="cancelUpload(fileProgress)"
+              *ngIf="!fileProgress.error && fileProgress.uploadProgress && fileProgress.uploadProgress < 100"></i>
+            <i role="button" class="cancel-upload bi bi-check2-circle text-success" (click)="cancelUpload(fileProgress)"
+              *ngIf="!fileProgress.error && fileProgress.uploadProgress && fileProgress.uploadProgress == 100"></i>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!filesProgress ||  filesProgress.length == 0" class="text-center">
+        <p>No files in progress. Upload some files to see the progress.</p>
+      </div>
+    </div>
+  </div>
+</div>

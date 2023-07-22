@@ -1,29 +1,57 @@
 <div class="container">
-  <h1 class="m-auto text-center">Livres</h1>
-  <div id="unverified-books" class="row">
-      Les Livres non vérifiés
-      <div *ngIf="unverified_books.length>0" class="row">
-          <div *ngFor="let book of unverified_books" class="col-lg-4 col-6 mb-3">
-            <div *ngIf="!choosed">
-              <a (click)="toPreview(book)" class="text-center">
-                <button class="btn">Voir {{book.filename}}</button>
-              </a>
-              <div class="choose mb-2">
-                <button class="btn btn-success mx-1" (click)="accept(book)">Accepter</button>
-                <button class="btn btn-primary mx-1" (click)="reject(book)">Rejecter</button>
-              </div>
-            </div>
-            <div *ngIf="choosed">
-              <a (click)="toPreview(book)">
-                <button class="btn">Voir {{book.filename}}</button>
-              </a>
-              <div class="choose">
-                <button class="btn btn-success m-1">Déja décidé</button>
-              </div>
-            </div>
-        
-          </div>    
-        </div>
+  <h1 class="m-auto text-center">Books</h1>
+  <h5>Unverified books</h5>
+  <div class="row row-cols-2 mt-4 m-auto">
+    <div *ngFor="let book of unverified_books" class="col mb-4">
+      <div class="card h-100 card-book bg-light">
+          <a (click)="toPreview(book)" class="text-center">
+            <button class="btn">Voir {{book.filename}}</button>
+          </a>
+            <button type="button" class="btn btn-success m-1" data-bs-toggle="modal" data-bs-target="#acceptModal" (click)="selectForAccept(book)">Accept</button>
+            <button class="btn btn-danger m-1" (click)="reject(book)">Reject</button>
+
+      </div>
+    </div>
+  </div>
+  <h5>Verified books</h5>
+  <div class="row row-cols-2 mt-4 m-auto">
+    <div *ngFor="let book of verified_books" class="col mb-4">
+      <div class="card h-100 card-book bg-light">
+          <a (click)="toPreview(book)" class="text-center">
+            <button class="btn">Voir {{book.filename}}</button>
+          </a>
+            <button class="btn btn-success m-1" *ngIf="book.accepted==1" disabled>Accepted</button>
+            <button class="btn btn-danger m-1" *ngIf="book.accepted==-1" disabled>Rejected</button>
+      </div>
+    </div>
   </div>
 
+
 </div>
+
+
+
+
+<!-- Accept Modal -->
+<div class="modal fade" id="acceptModal" tabindex="-1" role="dialog" aria-labelledby="acceptModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Description</h5>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <textarea class="form-control" rows="4" id="description" [(ngModel)]="description" name="description" placeholder="describe the book" required></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" (click)="accept()" data-bs-dismiss="modal">Accept</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

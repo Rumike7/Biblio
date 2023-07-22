@@ -13,7 +13,7 @@ class StoreUploadRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class StoreUploadRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'domain' => 'required|string|max:255',
+            'faculty' => 'required|string|max:255',
+            'type' => 'required|string|max:255',
+            'file' => 'required|mimes:pdf,epub|max:10240', // Assuming maximum file size is 10MB
         ];
     }
 }

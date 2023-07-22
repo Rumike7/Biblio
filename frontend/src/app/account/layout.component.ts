@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 
 import { AccountService } from 'src/app/_services/account.service';
 
-@Component({ 
+@Component({
     templateUrl: 'layout.component.html', styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent {
@@ -19,7 +19,7 @@ export class LayoutComponent {
         }
     }
     isLogin(){
-        return this.router.url==='/account/auth/login';
+        return this.router.url.split('?')[0]==='/account/auth/login';
     }
     md(){
         if(window.innerWidth>800)return true;

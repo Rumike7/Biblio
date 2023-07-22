@@ -1,28 +1,47 @@
-<div class="container-fluid m-0 p-0 fill">
-    <div class="row m-0 p-0 text-center h-100">
-        <div class="col-md-6 m-auto ">
-            <div class="container p-4">
-                <div class="row text-center">
-                    <div class="col-6 choice border-danger" [ngClass]="{'border-bottom':isLogin()}">
-                        <a routerLink="login" routerLinkActive="active" ariaCurrentWhenActive="page">Connexion</a>
-                    </div>
-                    <div class="col-6 choice border-danger" [ngClass]="{'border-bottom':!isLogin()}">
-                        <a routerLink="register" routerLinkActive="active" ariaCurrentWhenActive="page">Inscription</a>
-                    </div>
-                </div>
-                <div class="row" >
-                    <div class="card">
-                        <div class="card-body">
-                            <router-outlet></router-outlet>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="image-auth" class="col-0 col-md-6 p-0 m-0 h-100" *ngIf="md()">
-            <img class="opacity-50 w-100 h-100 p-0  top-0 left-0" src="../../assets/image/auth_3_4.jpg" alt="">
-            <h2 class=" title">Cetasso Books</h2>
-        </div>
-    </div>
-</div>
 
+<section class="h-100 gradient-form" style="background-color: #eee;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-xl-10 h-100">
+        <div class="card rounded-3 text-black h-100">
+          <div class="row g-0 h-100">
+            <div class="col-lg-6 d-flex align-items-center">
+              <div class="card-body p-md-5 mx-md-4">
+
+                <div class="text-center">
+                  <h3>RukBooks</h3>
+                </div>
+
+                <div class="container p-4">
+                  <div class="row text-center">
+                      <div class="col-6 choice border-danger" [ngClass]="{'border-bottom':isLogin()}">
+                          <a routerLink="login" routerLinkActive="active" ariaCurrentWhenActive="page">Connexion</a>
+                      </div>
+                      <div class="col-6 choice border-danger" [ngClass]="{'border-bottom':!isLogin()}">
+                          <a routerLink="register" routerLinkActive="active" ariaCurrentWhenActive="page">Inscription</a>
+                      </div>
+                  </div>
+                  <div class="row" >
+                      <div class="card">
+                          <div class="card-body">
+                              <router-outlet></router-outlet>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+
+
+
+              </div>
+            </div>
+            <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+              <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                <h4 class="mb-4">RukBooks, study easily</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

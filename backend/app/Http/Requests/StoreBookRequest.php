@@ -13,7 +13,7 @@ class StoreBookRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,11 @@ class StoreBookRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'user_id' => 'required|integer',
+            'domain' => 'required|string|max:255',
+            'faculty' => 'required|string|max:255',
+            'type' => 'required|string|max:255',
+            'file' => 'required|file',
         ];
     }
 }

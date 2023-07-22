@@ -2,9 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Book } from '@app/_interfaces/book.interface';
+import { Book, Comment } from '@app/_interfaces/book.interface';
 
-import {environment} from '@environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
@@ -12,6 +11,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class BookService {
   private bookSubject: BehaviorSubject<Book>;
   public book: Observable<Book>;
+  private apiUrl="/api/books";
+  private apiAdminUrl="/api/admin/books";
+  private apiRatingUrl="/api/admin/ratings";
 
   constructor(
     private router: Router,
@@ -22,33 +24,74 @@ export class BookService {
   }
   public get bookValue(): Book {
       return this.bookSubject.value;
-  }    
+  }
   setBook(book:Book){
     localStorage.setItem('book', JSON.stringify(book));
     this.bookSubject.next(book);
-  }  
-  getUnverifiedBook(){
-    return this.http.get<Book[]>(`${environment.apiUrl}/admin/unverifiedBooks`);
   }
-  getVerifiedBook(){
-    return this.http.get<Book[]>(`${environment.apiUrl}/admin/verifiedBooks`);
-  }
-  accept(book:Book){
-    return this.http.post(`${environment.apiUrl}/admin/accept`, book);
-  }
-  reject(book:Book){
-    return this.http.post(`${environment.apiUrl}/admin/reject`,book);
+  get(bookId:number){
+    return this.http.get<Book>(`${this.apiUrl}/${bookId}`);
   }
 
-  getFirstBook(number: number){
-
+  getAll(){
+    return this.http.get<Book[]>(`${this.apiUrl}`);
   }
+  getAllAdmin(){
+    return this.http.get<Book[]>(`${this.apiAdminUrl}`);
+  }
+
+  changeState(book:Book, accepted: number, description :string){
+    book.accepted=accepted;
+    book.description=description;
+    console.log(book);
+    return this.http.put(`${this.apiAdminUrl}/${book.id}`, book).subscribe({
+      next: (book) => {
+        console.log({book});
+      },
+      error: (error:any) => {
+          console.log(error);
+      }
+    });
+  }
+
+  rate(bookId:number, userId:number, rating: number, like : number){
+    return this.http.post(`${this.apiUrl}/rate`,{
+      "book_id":bookId,
+      "user_id":userId,
+      "rating":rating,
+      "like":like,
+    });
+  }
+
+  myrate(bookId:number, userId:number){
+    return this.http.post(`${this.apiUrl}/myrate`,{
+      "book_id":bookId,
+      "user_id":userId,
+    });
+  }
+
+  comment(bookId:number, userId:number, text: string, parentId : number){
+    return this.http.post<Comment>(`${this.apiUrl}/comment`,{
+      "book_id":bookId,
+      "user_id":userId,
+      "text":text,
+      "parentId":parentId
+    });
+  }
+
+
+
+
+
+
+
+
   toPreview(book:Book){
     this.setBook(book);
     this.router.navigate(['/preview']);
   }
 
   search(form:FormGroup<any>,keysearch:boolean){
-      return this.http.post(environment.apiUrl+'/search/',{form:form.value,keysearch:keysearch});
+      return this.http.post(this.apiUrl+'/search/',{form:form.value,keysearch:keysearch});
   }
 }

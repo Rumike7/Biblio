@@ -1,0 +1,79 @@
+<div class="container my-4">
+
+  <div class="row">
+      <h2>
+          Hello, <span class="text-primary">{{user.username}}</span>
+      </h2>
+      <p >
+          Welcome to our website, created by students for students.
+          Contribute by sharing your valuable documents and help the entire community learn and grow together.
+      </p>
+  </div>
+
+  <div class="row text-center">
+      <form [formGroup]="bookForm">
+          <div class="form-group m-1 w-75 mx-auto">
+            <select name="faculy" class="form-select" formControlName="faculty">
+              <option value="" selected disabled>Faculty</option>
+              <option *ngFor="let choice of values.faculties" [value]="choice">
+                  {{ choice }}
+              </option>
+            </select>
+
+          </div>
+
+          <div class="form-group mt-2 mb-2 w-75 mx-auto">
+            <select name="domain" class="form-select" formControlName="domain">
+              <option value="" selected disabled>Domain</option>
+              <option *ngFor="let choice of values.domains" [value]="choice">
+                  {{ choice }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group mt-2 mb-2 w-75 mx-auto">
+            <select name="type" class="form-select" formControlName="type">
+              <option value="" selected disabled>Type</option>
+              <option *ngFor="let choice of values.types" [value]="choice">
+                  {{ choice }}
+              </option>
+            </select>
+          </div>
+
+          <div class="row">
+              <div class="file-upload-container mt-3 mx-auto">
+                  <label for="fileUpload" class="file-upload-label">
+                      <i class="bi bi-cloud-arrow-up-fill"></i>
+                      Choose Files
+                  </label>
+                  <input type="file" id="fileUpload" class="file-upload-input" [accept]="requiredFileType"
+                      (change)="onFileSelected($event)" [multiple]="multiple" #fileUpload hidden>
+                  <div class="uploaded-files mt-3">
+                      <ng-container *ngIf="uploaded_files.length > 0; else noFiles">
+                          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                              <div *ngFor="let file of uploaded_files;let i=index" class="file-item">
+                                  <a href="#" (click)="deleteFile(i)">
+                                      <i class="bi bi-x"></i>
+                                  </a>
+                                  <i class="bi bi-file-earmark-fill"></i>
+                                  <span>{{ file.name }}</span>
+                              </div>
+                          </div>
+                      </ng-container>
+                      <ng-template #noFiles>
+                          <div class="text-muted">
+                              <i class="bi bi-file-earmark-fill"></i>
+                              No files selected
+                          </div>
+                      </ng-template>
+                  </div>
+                  <div class="upload-button">
+                      <button (click)="onUpload()" id="uploadbutton" class="btn btn-success">
+                          Upload
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </form>
+  </div>
+</div>

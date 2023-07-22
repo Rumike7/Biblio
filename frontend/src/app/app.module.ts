@@ -6,36 +6,33 @@ import{HttpClientModule} from '@angular/common/http';
 import { fakeBackendProvider } from './_interceptors/fake-backend.interceptor';
 import { MaterialModule } from './material.module';
 
-
 import { AppRoutingModule } from './app-routing.module';
+
 import { AppComponent } from './app.component';
 import { NavComponent } from './_core/nav/nav.component';
-import { BooksListComponent } from './book/books-list/books-list.component';
-import { BookComponent } from './book/book/book.component';
-import { SearchBarComponent } from './search/search-bar/search-bar.component';
+import { BooksComponent } from './books/books.component';
+import { BookDetailsComponent } from './book-details/book-details.component';
 import { NewsletterComponent } from './other/newsletter/newsletter.component';
 import { AlertComponent } from './alert/alert.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { ErrorInterceptor } from './_interceptors/error.interceptor';
-import { HomeComponent } from './home/home.component';
-import { PreviewComponent } from './preview/preview.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ContactComponent } from './contact/contact.component';
-import { TestComponent } from './test/test.component';
+import { UploadingComponent } from './uploading/uploading.component';
+import { UploadComponent } from './upload/upload.component';
+import { CommentComponent } from './contact/comment.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
-    BooksListComponent,
-    BookComponent,
-    SearchBarComponent,
+    BooksComponent,
+    BookDetailsComponent,
     NewsletterComponent,
     AlertComponent,
-    HomeComponent,
-    PreviewComponent,
-    ContactComponent,
-    TestComponent,
+    UploadingComponent,
+    UploadComponent,
+    CommentComponent
   ],
   imports: [
     BrowserModule,

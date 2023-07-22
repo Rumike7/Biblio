@@ -1,0 +1,207 @@
+<div class="container">
+  <div class="row bg-light justify-content-between p-4">
+      <div class="col-md-5">
+          <div class="row">
+              <div class="col-12">
+                  <img src="api/{{book.image}}" class="img-fluid" alt="Responsive image">
+              </div>
+          </div>
+          <div class="d-flex ms-4 mt-3">
+              <div class="me-4">
+                  <i class="fas fa-thumbs-up" [ngClass]="{'text-primary':like==1}" data-bs-toggle="modal" data-bs-target="#ratingModal" (click)="likeBook()"></i> {{book.liked}}
+              </div>
+              <div class="me-4">
+                  <i class="fas fa-thumbs-down" [ngClass]="{'text-danger
+                  ':like==-1}" data-bs-toggle="modal" data-bs-target="#ratingModal" (click)="dislikeBook()"></i> {{book.disliked}}
+              </div>
+              <div class="me-4">
+                  <i class="fas fa-comment" data-bs-toggle="modal" data-bs-target="#commentModal" ></i> {{book.commented}}
+              </div>
+              <!-- <div class="me-4">
+                  <i class="fas fa-share"></i>
+              </div> -->
+          </div>
+      </div>
+      <div class="col-md-6 book-details">
+        <h5 class="book-title">{{book.filename}}</h5>
+        <div class="text-muted"><a routerLink="/userprofile"></a>by {{ book.author.username }}</div>
+        <div>{{book.description}}</div>
+        <div>
+          <i *ngFor="let star of general.stars" class="fa text-warning" [ngClass]="general.starClass(book.rating,star)"></i>
+          <span>({{book.rated}})</span>
+        </div>
+        <div class="book-info">
+            <span class="fst-italic" style="font-weight:500">Domain:</span> {{book.domain}}<br>
+            <span class="fst-italic" style="font-weight:500">Faculty:</span> {{book.faculty}}<br>
+            <span class="fst-italic" style="font-weight:500">Type:</span> {{book.type}}<br>
+
+        </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-8 m-auto">
+        <div class="btn-group" role="group" aria-label="Book Actions">
+            <a (click)="toPreview()">
+                <button class="btn btn-primary m-2">
+                    <i class="fas fa-eye"></i> Preview
+                </button>
+            </a>
+            <a [href]="book.file" download>
+                <button class="btn btn-success m-2">
+                    <i class="fas fa-download"></i> Download
+                </button>
+            </a>
+        </div>
+    </div>
+  </div>
+  <!-- <h4>Recommended Books</h4>
+  <div class="row row-cols-md-3 mt-4 m-auto">
+    <div *ngFor="let book of books; let i=index" class="col mb-4">
+      <div class="card h-100 card-book bg-light">
+        <a (click)="toBook(book)" role="button">
+          <div class="row justify-content-center">
+            <div class="col-10">
+              <img src="api/{{book.image}}" alt="Book Cover" class="w-100">
+            </div>
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-11">
+              <h6 >{{ book.filename }}</h6>
+              <div class="text-muted"><a routerLink="/userprofile"></a>by{{ book.author }}</div>
+              <div>
+
+                <i *ngFor="let star of general.stars" class="fa text-warning" [ngClass]="general.starClass(book.rating,star)"></i>
+                <span>({{book.rated}})</span>
+              </div>
+            </div>
+
+          </div>
+        </a>
+      </div>
+    </div>
+  </div> -->
+
+  <div class="row">
+    <div class="container">
+      <section class="gradient-custom">
+        <div class="container my-5 py-5">
+          <div class="row d-flex justify-content-center">
+            <div class="col-md-12 col-lg-10 col-xl-8">
+              <div class="card">
+                <div class="card-body p-4">
+            <h4 class="text-center mb-4 pb-2">Comments</h4>
+            <div class="row">
+              <div class="col">
+                <app-comment [comments]="book.commentsWithReply" [isRoot]="true" (replyEvent)="commentToReply=$event"></app-comment>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </section>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- Rating Modal -->
+<div class="modal fade" id="ratingModal" tabindex="-1" role="dialog" aria-labelledby="ratingModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Rate the book</h5>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label>Rating:</label>
+            <div class="star-rating d-flex justify-content-center">
+              <span class="star" *ngFor="let star of [1, 2, 3, 4, 5]" [ngClass]="{ 'text-warning': star <= rating }" (click)="rating=star">
+                <i class="fa-star"[ngClass]="{ 'fa': star <= rating ,'far':star > rating}"></i>
+              </span>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="likeWithoutRate()" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-warning" (click)="rate()" data-bs-dismiss="modal">Rate</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Comment Modal -->
+<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Say your opinion</h5>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <textarea class="form-control" rows="4" id="description" [(ngModel)]="comment" name="comment" placeholder="comment" required></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="commentBook()" data-bs-dismiss="modal">Comment</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CommentToReply Modal -->
+<div class="modal fade" id="commentToReplyModal" tabindex="-1" role="dialog" aria-labelledby="commentToReplyModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+          <div class="container" *ngIf="commentToReply">
+            <div class="row d-flex justify-content-center">
+              <div class="col">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="d-flex flex-start align-items-center">
+                      <div>
+                        <h6 class="fw-bold text-primary mb-1">{{commentToReply.author.username}}</h6>
+                        <p class="text-muted small mb-0">
+                          Shared publicly - {{commentToReply.created_at | date: 'dd/MM/yyyy, HH:mm'}}
+                        </p>
+                      </div>
+                    </div>
+
+                    <p class="mt-3 mb-4 pb-2">
+                      {{commentToReply.text}}
+                    </p>
+                  </div>
+                  <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
+                    <div class="d-flex flex-start w-100">
+                      <div class="me-5" >
+
+                      </div>
+                      <div class="form-outline w-100">
+                        <textarea class="form-control" id="textAreaExample" rows="4"
+                          style="background: #fff;" name="reply" [(ngModel)]="reply"></textarea>
+                        <label class="form-label" for="textAreaExample">Reply</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="replyComment()" data-bs-dismiss="modal">Reply</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

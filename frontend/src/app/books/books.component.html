@@ -1,0 +1,114 @@
+<!-- Search Form Section -->
+<section class="search-container py-4">
+  <div class="container">
+    <form class="search-form d-flex flex-wrap justify-content-center align-items-between w-auto"
+          [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="input-group mb-3">
+        <input formControlName="keyword" type="search" class="form-control" placeholder="Search for a book" aria-label="Search" />
+        <button class="btn btn-primary" type="submit">Search</button>
+      </div>
+      <div class="search-options">
+        <div class="form-check form-check-inline">
+          <input type="radio" class="form-check-input" formControlName="searchOption" value="keyword" [checked]="keysearch" (change)="search('keyword')">
+          <label class="form-check-label">Keyword Search</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input type="radio" class="form-check-input" formControlName="searchOption" value="more" [checked]="!keysearch" (change)="search('more')">
+          <label class="form-check-label">Advanced Search</label>
+        </div>
+      </div>
+      <div class="advanced-search w-100" *ngIf="!keysearch">
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <input type="text" class="form-control" formControlName="title" placeholder="Search by Title">
+          </div>
+          <div class="col-md-6">
+            <select name="faculty" class="form-select" formControlName="faculty">
+              <option value="" selected disabled>Select Faculty</option>
+              <option *ngFor="let choice of values.faculties" [value]="choice">{{ choice }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row justify-content-center mt-3">
+          <div class="col-md-6">
+            <select name="domain" class="form-select" formControlName="domain">
+              <option value="" selected disabled>Select Domain</option>
+              <option *ngFor="let choice of values.domains" [value]="choice">{{ choice }}</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <div class="form-check form-check-inline" *ngFor="let choice of values.types; let i = index">
+              <input type="radio" class="form-check-input" formControlName="type" name="type" [value]="choice" [checked]="i === 0" id="type{{i}}">
+              <label class="form-check-label" for="type{{i}}">{{ choice }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- Welcome Section -->
+<section class="welcome-section mt-4">
+  <div class="container">
+    <div class="row">
+      <div class="col text-center">
+        <h2 class="welcome-text text-primary font-weight-bold">
+          Welcome to the Online Books Project.
+        </h2>
+        <p class="description">
+          Explore over courses, exams, and study materials in various domains, ranging from engineering to literature.
+          Join hundreds of volunteers who are ready to help each other learn and grow.
+        </p>
+      </div>
+    </div>
+    <!-- Book Cards -->
+<div class="container">
+  <div class="row row-cols-2 row-cols-md-3 mt-4 m-auto">
+    <div *ngFor="let book of books; let i=index" class="col mb-4">
+      <div class="card h-100 card-book bg-light" *ngIf="i >= numberPerPage * page && i < numberPerPage * (page + 1)">
+        <a (click)="toBook(book)" role="button">
+          <div class="row justify-content-center">
+            <div class="col-10">
+              <img src="api/{{book.image}}" alt="Book Cover" class="w-100">
+            </div>
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-11">
+              <h6 >{{ book.filename }}</h6>
+              <div class="text-muted"><a routerLink="/userprofile"></a>by{{ book.author.username }}</div>
+              <div>
+                <i *ngFor="let star of general.stars" class="fa text-warning" [ngClass]="general.starClass(book.rating,star)"></i>
+                <span>({{book.rated}})</span>
+              </div>
+            </div>
+
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item">
+        <a class="page-link" (click)="precPage()" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+          <span class="sr-only">Previous</span>
+        </a>
+      </li>
+      <li *ngFor="let pageFromOne of pagesFromOne" [ngClass]="{'active':page==pageFromOne-1}" class="page-item">
+        <a class="page-link" (click)="page=pageFromOne-1">{{pageFromOne}}</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" (click)="nextPage()" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+          <span class="sr-only">Next</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+  </div>
+</section>

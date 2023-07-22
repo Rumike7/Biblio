@@ -13,7 +13,7 @@ class UpdateBookRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,13 @@ class UpdateBookRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'filename' => 'required|string|max:255',
+            'domain' => 'required|string|max:255',
+            'faculty' => 'required|string|max:255',
+            'type' => 'required|string|max:255',
+            'file' => 'mimes:pdf,epub|max:10240', // Assuming maximum file size is 10MB
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Assuming maximum image size is 2MB
+            'description' => 'required|string',
         ];
     }
 }

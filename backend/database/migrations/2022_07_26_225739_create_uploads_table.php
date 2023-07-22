@@ -17,32 +17,8 @@ return new class extends Migration
         Schema::create('uploads', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned()->index();
-            $table->string('filename');
-            //image_path:storage_path()."/app/images/".filename
-            //file_path:storage_path()."/app/files/".filenam,
-
-            $table->integer('accepted')->default(0);
-            $table->integer('admin_id')->unsigned()->index()->default(1);
-            $table->string('domain')->default("")->nullable();
-            $table->string('faculty')->default("")->nullable();
-            $table->string('type')->default("Cours");
-            $table->string('file_path');
-            $table->string('image_path')->default(
-                "backend/storage/app/images/images.pdf"
-            );
-            $table->string('liked')->default('0');
-            $table->text('description')->nullable();
-            $table->softDeletes();
             $table->timestamps();
-
-            $table->foreign('user_id')
-                  ->references('id')
-                  ->on('users')
-                  ->onDelete('cascade');
-            $table->foreign('admin_id')
-                  ->references('id')
-                  ->on('users')
-                  ->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

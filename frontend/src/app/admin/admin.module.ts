@@ -5,6 +5,7 @@ import { HomeComponent } from './home.component';
 import { BooksComponent } from './books.component';
 import { MessagesComponent } from './messages.component';
 import { TeamMemberComponent } from './team-member.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -17,7 +18,9 @@ import { TeamMemberComponent } from './team-member.component';
   ],
   imports: [
     CommonModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
   ]
 })
 export class AdminModule { }
