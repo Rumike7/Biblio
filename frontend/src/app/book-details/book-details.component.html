@@ -1,5 +1,5 @@
-<div class="container">
-  <div class="row bg-light justify-content-between p-4">
+<div class="container w-75 auto">
+  <div class="row bg-light justify-content-between p-4 mx-5">
       <div class="col-md-5">
           <div class="row">
               <div class="col-12">
@@ -8,14 +8,16 @@
           </div>
           <div class="d-flex ms-4 mt-3">
               <div class="me-4">
-                  <i class="fas fa-thumbs-up" [ngClass]="{'text-primary':like==1}" data-bs-toggle="modal" data-bs-target="#ratingModal" (click)="likeBook()"></i> {{book.liked}}
+                  <i class="fas fa-thumbs-up" [ngClass]="{'text-primary':like==1}" *ngIf="user" data-bs-toggle="modal" data-bs-target="#ratingModal" (click)="likeBook()"></i>
+                  <i class="fas fa-thumbs-up" [ngClass]="{'text-primary':like==1}" *ngIf="!user" (click)="likeBook()"></i> {{book.liked}}
               </div>
               <div class="me-4">
-                  <i class="fas fa-thumbs-down" [ngClass]="{'text-danger
-                  ':like==-1}" data-bs-toggle="modal" data-bs-target="#ratingModal" (click)="dislikeBook()"></i> {{book.disliked}}
+                  <i class="fas fa-thumbs-down" [ngClass]="{'text-danger':like==-1}" *ngIf="user" data-bs-toggle="modal" data-bs-target="#ratingModal" (click)="dislikeBook()"></i>
+                  <i class="fas fa-thumbs-down" [ngClass]="{'text-danger':like==-1}" *ngIf="!user" (click)="dislikeBook()"></i> {{book.disliked}}
               </div>
               <div class="me-4">
-                  <i class="fas fa-comment" data-bs-toggle="modal" data-bs-target="#commentModal" ></i> {{book.commented}}
+                  <i class="fas fa-comment" *ngIf="user" data-bs-toggle="modal" data-bs-target="#commentModal" ></i>
+                  <i class="fas fa-comment" *ngIf="!user" ></i> {{book.commented}}
               </div>
               <!-- <div class="me-4">
                   <i class="fas fa-share"></i>
@@ -84,18 +86,24 @@
   <div class="row">
     <div class="container">
       <section class="gradient-custom">
-        <div class="container my-5 py-5">
+        <div class="container my-5">
           <div class="row d-flex justify-content-center">
-            <div class="col-md-12 col-lg-10 col-xl-8">
+            <div class="col-10">
               <div class="card">
                 <div class="card-body p-4">
-            <h4 class="text-center mb-4 pb-2">Comments</h4>
-            <div class="row">
-              <div class="col">
-                <app-comment [comments]="book.commentsWithReply" [isRoot]="true" (replyEvent)="commentToReply=$event"></app-comment>
-              </div>
+                  <h4 class="text-center mb-4 pb-2">Comments</h4>
+                  <div class="row">
+                    <div class="col" *ngIf="book.commentsWithReply.length>0">
+                      <app-comment [comments]="book.commentsWithReply" [isRoot]="true" (replyEvent)="commentToReply=$event"></app-comment>
+                    </div>
+                    <div class="col" *ngIf="book.commentsWithReply.length==0">
+                      <h6 class="text-center">
+                        <a *ngIf="user" data-bs-toggle="modal" data-bs-target="#commentModal" >Be the first to comment</a>
+                        <a *ngIf="!user" >Be the first to comment</a>
+                      </h6>
+                    </div>
+                  </div>
             </div>
-          </div>
         </div>
       </div>
     </div>

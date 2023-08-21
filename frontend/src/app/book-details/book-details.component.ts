@@ -20,6 +20,7 @@ export class BookDetailsComponent implements OnInit {
   reply='';
   commentToReply!:Comment;
   user!:User;
+  modal="modal";
 
   constructor(
     public general: GeneralService,
@@ -42,6 +43,7 @@ export class BookDetailsComponent implements OnInit {
 
 
     this.user=this.accountService.userValue;
+    if(!this.user)this.modal='';
 
     // this.bookService.getAll().subscribe({
     //   next: (books:Book[]) => {
@@ -114,7 +116,7 @@ export class BookDetailsComponent implements OnInit {
     this.bookService.comment(this.book.id,Number(this.user.id),this.comment,0).subscribe({
       next: (comment:Comment) => {
         console.log({comment});
-        this.book.commentsWithReply.push();
+        this.book.commentsWithReply.push(comment);
       },
       error: (error:any) => {
           console.log(error);
@@ -125,9 +127,9 @@ export class BookDetailsComponent implements OnInit {
   replyComment(){
     if(!this.user)this.router.navigate(['/account/login']);
     this.bookService.comment(this.book.id,Number(this.user.id),this.reply,this.commentToReply.id).subscribe({
-      next: (comment:Comment) => {
-        console.log({comment});
-        this.book.commentsWithReply.push();
+      next: (reply:Comment) => {
+        console.log({reply});
+        this.commentToReply.replyComment.push(reply);
       },
       error: (error:any) => {
           console.log(error);

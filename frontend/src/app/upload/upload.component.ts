@@ -58,6 +58,7 @@ export class UploadComponent implements OnInit,OnDestroy {
     });
   }
   get f() { return this.bookForm.controls; }
+  get selectedFaculty() { return this.bookForm.value["faculty"]; }
 
   ngOnDestroy(): void {
 

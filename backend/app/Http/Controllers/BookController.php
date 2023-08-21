@@ -26,7 +26,8 @@ class BookController extends Controller
 
 
 
-        $comments = Comment::with(['author','replyTos.comment.author','replyTos.comment.replyTos.comment.author'])->whereNotIn('id', function ($query) {
+        $comments = Comment::where('book_id',$book->id)->
+            with($nestedRelationships)->whereNotIn('id', function ($query) {
             $query->select('response_id')->from('reply_tos');
         })->get();
 
@@ -126,7 +127,7 @@ class BookController extends Controller
 
     public function show($book)
     {
-    
+
         $book=Book::where('accepted',1)->with('author')->with('ratings')->with('comments.replyTos')->with('comments.author')->find($book);
         self::setBookInfo($book);
         return $book;

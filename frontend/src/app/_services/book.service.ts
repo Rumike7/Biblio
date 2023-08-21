@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Book, Comment } from '@app/_interfaces/book.interface';
 
 import { BehaviorSubject, Observable } from 'rxjs';
+import { AccountService } from './account.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -17,10 +18,11 @@ export class BookService {
 
   constructor(
     private router: Router,
+    private accountService: AccountService,
     private http: HttpClient
     ) {
-    this.bookSubject = new BehaviorSubject<Book>(JSON.parse(<string>localStorage.getItem('book')));
-    this.book = this.bookSubject.asObservable();
+      this.bookSubject = new BehaviorSubject<Book>(JSON.parse(<string>localStorage.getItem('book')));
+      this.book = this.bookSubject.asObservable();
   }
   public get bookValue(): Book {
       return this.bookSubject.value;
@@ -29,6 +31,7 @@ export class BookService {
     localStorage.setItem('book', JSON.stringify(book));
     this.bookSubject.next(book);
   }
+
   get(bookId:number){
     return this.http.get<Book>(`${this.apiUrl}/${bookId}`);
   }

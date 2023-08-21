@@ -22,14 +22,10 @@ return new class extends Migration
             $table->string('type');
             $table->string('file');
             $table->string('image')->default('');
-            $table->integer('liked')->default(0);
-            $table->integer('disliked')->default(0);
-            $table->integer('comented')->default(0);
-            $table->integer('rated')->default(0);
             $table->text('description')->default('');
             $table->integer('user_id')->unsigned()->index();
             $table->timestamps();
-            
+
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

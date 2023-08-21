@@ -22,10 +22,10 @@
 
           </div>
 
-          <div class="form-group mt-2 mb-2 w-75 mx-auto">
+          <div class="form-group mt-2 mb-2 w-75 mx-auto" *ngIf="selectedFaculty!=''">
             <select name="domain" class="form-select" formControlName="domain">
               <option value="" selected disabled>Domain</option>
-              <option *ngFor="let choice of values.domains" [value]="choice">
+              <option *ngFor="let choice of values.domains[selectedFaculty]" [value]="choice">
                   {{ choice }}
               </option>
             </select>

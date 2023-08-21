@@ -62,53 +62,53 @@
         </p>
       </div>
     </div>
-    <!-- Book Cards -->
-<div class="container">
-  <div class="row row-cols-2 row-cols-md-3 mt-4 m-auto">
-    <div *ngFor="let book of books; let i=index" class="col mb-4">
-      <div class="card h-100 card-book bg-light" *ngIf="i >= numberPerPage * page && i < numberPerPage * (page + 1)">
-        <a (click)="toBook(book)" role="button">
-          <div class="row justify-content-center">
-            <div class="col-10">
-              <img src="api/{{book.image}}" alt="Book Cover" class="w-100">
-            </div>
-          </div>
-          <div class="row justify-content-center">
-            <div class="col-11">
-              <h6 >{{ book.filename }}</h6>
-              <div class="text-muted"><a routerLink="/userprofile"></a>by{{ book.author.username }}</div>
-              <div>
-                <i *ngFor="let star of general.stars" class="fa text-warning" [ngClass]="general.starClass(book.rating,star)"></i>
-                <span>({{book.rated}})</span>
+  </div>
+  <!-- Book Cards -->
+  <div class="container w-75 m-auto">
+    <div class="row row-cols-2 row-cols-md-3 mt-4 m-auto">
+      <div *ngFor="let book of books; let i=index" class="col mb-4">
+        <div class="card h-100 card-book bg-light" *ngIf="i >= numberPerPage * page && i < numberPerPage * (page + 1)">
+          <a (click)="toBook(book)" role="button">
+            <div class="row justify-content-center">
+              <div class="col-10">
+                <img src="api/{{book.image}}" alt="Book Cover" class="w-100">
               </div>
             </div>
+            <div class="row justify-content-center">
+              <div class="col-11">
+                <h6 >{{ book.filename }}</h6>
+                <div class="text-muted"><a routerLink="/userprofile"></a>by {{ book.author.username }}</div>
+                <div>
+                  <i *ngFor="let star of general.stars" class="fa text-warning" [ngClass]="general.starClass(book.rating,star)"></i>
+                  <span>({{book.rated}})</span>
+                </div>
+              </div>
 
-          </div>
-        </a>
+            </div>
+          </a>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Pagination -->
-  <nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-      <li class="page-item">
-        <a class="page-link" (click)="precPage()" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-          <span class="sr-only">Previous</span>
-        </a>
-      </li>
-      <li *ngFor="let pageFromOne of pagesFromOne" [ngClass]="{'active':page==pageFromOne-1}" class="page-item">
-        <a class="page-link" (click)="page=pageFromOne-1">{{pageFromOne}}</a>
-      </li>
-      <li class="page-item">
-        <a class="page-link" (click)="nextPage()" aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
-          <span class="sr-only">Next</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
-</div>
+    <!-- Pagination -->
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li class="page-item">
+          <a class="page-link" (click)="precPage()" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
+        <li *ngFor="let pageFromOne of pagesFromOne" [ngClass]="{'active':page==pageFromOne-1}" class="page-item">
+          <a class="page-link" (click)="page=pageFromOne-1">{{pageFromOne}}</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" (click)="nextPage()" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </section>

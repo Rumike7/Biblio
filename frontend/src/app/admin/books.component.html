@@ -7,8 +7,13 @@
           <a (click)="toPreview(book)" class="text-center">
             <button class="btn">Voir {{book.filename}}</button>
           </a>
-            <button type="button" class="btn btn-success m-1" data-bs-toggle="modal" data-bs-target="#acceptModal" (click)="selectForAccept(book)">Accept</button>
-            <button class="btn btn-danger m-1" (click)="reject(book)">Reject</button>
+          <div class="book-info">
+            <span class="fst-italic" style="font-weight:500">Domain:</span> {{book.domain}}<br>
+            <span class="fst-italic" style="font-weight:500">Faculty:</span> {{book.faculty}}<br>
+            <span class="fst-italic" style="font-weight:500">Type:</span> {{book.type}}<br>
+          </div>
+          <button type="button" class="btn btn-success m-1" data-bs-toggle="modal" data-bs-target="#acceptModal" (click)="selectForAccept(book)">Accept</button>
+          <button class="btn btn-danger m-1" (click)="reject(book)">Reject</button>
 
       </div>
     </div>
@@ -17,11 +22,11 @@
   <div class="row row-cols-2 mt-4 m-auto">
     <div *ngFor="let book of verified_books" class="col mb-4">
       <div class="card h-100 card-book bg-light">
-          <a (click)="toPreview(book)" class="text-center">
-            <button class="btn">Voir {{book.filename}}</button>
-          </a>
-            <button class="btn btn-success m-1" *ngIf="book.accepted==1" disabled>Accepted</button>
-            <button class="btn btn-danger m-1" *ngIf="book.accepted==-1" disabled>Rejected</button>
+        <a (click)="toPreview(book)" class="text-center">
+          <button class="btn">Voir {{book.filename}}</button>
+        </a>
+        <button class="btn btn-success m-1" *ngIf="book.accepted==1" disabled>Accepted</button>
+        <button class="btn btn-danger m-1" *ngIf="book.accepted==-1" disabled>Rejected</button>
       </div>
     </div>
   </div>

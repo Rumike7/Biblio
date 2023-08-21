@@ -11,6 +11,7 @@ use App\Http\Controllers\ValuesController;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Rating;
 use App\Models\Comment;
+use App\Models\User;
 use App\Models\ReplyTo;
 
 /*
@@ -56,6 +57,10 @@ Route::post('/books/rate',function(Request $request){
     );
     return $rating;
 });
+Route::post('/books/mbyrate',function(Request $request){
+    $rating = Rating::where("user_id",$request->user_id)->where("book_id",$request->book_id)->first();
+    return $rating;
+});
 Route::post('/books/myrate',function(Request $request){
     $rating = Rating::where("user_id",$request->user_id)->where("book_id",$request->book_id)->first();
     return $rating;
@@ -70,11 +75,14 @@ Route::post('/books/comment',function(Request $request){
             ['id' => $request->id],
             ['response_id' => $comment->id,'comment_id' => $request->parentId]
         );
+    $comment->author=User::find($request->user_id)->first();
+    $comment->replyComment=[];
     return $comment;
 });
 
 Route::apiResource('/values',ValuesController::class);
 Route::apiResource('/books',BookController::class);
+Route::apiResource('/uploads',UploadController::class);
 Route::apiResource('/admin/books',BookAdminController::class);
 Route::get('/public/{type}/{folder}/{filename}', function ($type,$folder,$filename) {
     $path = 'public/'.$type.'/'.$folder.'/' . $filename;
